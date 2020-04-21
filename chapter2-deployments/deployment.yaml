@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hellok8s
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hellok8s
+  template:
+    metadata:
+      labels:
+        app: hellok8s
+    spec:
+      containers:
+      - image: httpd
+        name: apache-container
+        ports:
+        - containerPort: 80
+      - image: rmaubrey2018/rubytest:v2
+        name: hellok8s-container
+        readinessProbe:
+          periodSeconds: 1
+          successThreshold: 5
+          httpGet:
+            path: /
+            port: 4567
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 4567
