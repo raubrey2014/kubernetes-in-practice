@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: limited-busybox
+spec:
+  containers:
+  - name: limited-busybox-container
+    image: busybox
+    command: ["dd", "if=/dev/zero", "of=/dev/null"]
+    resources:
+      limits:
+        cpu: 500m
